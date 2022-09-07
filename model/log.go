@@ -24,6 +24,6 @@ func (log1 *QjLog) SetLog() {
 	log1.LogLogger = utils.Setlog(log1.LogFileName, log1.Logflag, log1.LogLogger)
 	fmt.Println(log1)
 }
-func (log1 *QjLog) Print(formatter string, v ...any) {
-	log1.LogLogger.Printf(formatter, v)
+func (log1 *QjLog) Print(v ...any) {
+	log1.LogLogger.Println(v)
 }

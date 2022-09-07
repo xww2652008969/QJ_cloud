@@ -3,9 +3,9 @@ package model
 import "github.com/google/uuid"
 
 type User struct {
-	id       uint `gorm:"primaryKey"`
+	Id       uint `gorm:"primaryKey"`
 	Uuid     uuid.UUID
-	PAssword string
+	Pqssword string
 	Name     string
 	Email    string
 }

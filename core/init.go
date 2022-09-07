@@ -1,8 +1,8 @@
 package core
 
-import "gitgub.com/xww2652008969/QJ-cloud/global"
-
 func Init() {
-	initlog()
-	global.QJ_log.Print("日志系统成功启动")
+	initlog() //初始化日式
+	InitDB()  //初始化数据库
+	//reids()      //初始化redis
+	Migrate() //迁移数据库
 }
