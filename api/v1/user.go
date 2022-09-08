@@ -30,3 +30,14 @@ func (userapi *UserApi) UserRegister(c *gin.Context) {
 		//返回正确
 	}
 }
+func (userapi *UserApi) UserLogin(c *gin.Context) {
+	var u request.REqUserLogin
+	var user model.User
+	err := c.ShouldBindJSON(&u)
+	user.Name = u.Name
+	if err != nil {
+		global.QJ_log.Print(err)
+		//传入参数有误
+	}
+	err = service.ServiceGroup.Gorm.UserGormapi.UserLogin(user)
+}
