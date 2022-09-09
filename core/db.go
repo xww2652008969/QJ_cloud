@@ -18,13 +18,13 @@ func InitDB() {
 		SkipInitializeWithVersion: false,                                                                              // 根据当前 MySQL 版本自动配置
 	}), &gorm.Config{})
 	if err != nil {
-		global.QJ_log.Print(err)
-		os.Exit(1)
+		global.QjLog.Print(err)
+		os.Exit(-1)
 	}
-	global.QJ_db = Db
-	global.QJ_log.Print("连接数据库成功")
+	global.QjDb = Db
+	global.QjLog.Print("连接数据库成功")
 }
 func Migrate() {
-	global.QJ_db.AutoMigrate(&model.User{})
-	global.QJ_db.AutoMigrate(&model.File{})
+	global.QjDb.AutoMigrate(&model.User{})
+	global.QjDb.AutoMigrate(&model.File{})
 }

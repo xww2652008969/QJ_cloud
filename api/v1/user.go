@@ -16,7 +16,7 @@ func (userapi *UserApi) UserRegister(c *gin.Context) {
 	var user model.User
 	err := c.ShouldBindJSON(&u)
 	if err != nil {
-		global.QJ_log.Print(err)
+		global.QjLog.Print(err)
 		//  传入参数有错
 	}
 	user.Name = u.Name
@@ -25,7 +25,7 @@ func (userapi *UserApi) UserRegister(c *gin.Context) {
 	err = service.ServiceGroup.Gorm.UserGormapi.UserRegister(user)
 	if err != nil {
 		//  返回错误
-		global.QJ_log.Print(err)
+		global.QjLog.Print(err)
 	} else {
 		//返回正确
 	}
@@ -36,7 +36,7 @@ func (userapi *UserApi) UserLogin(c *gin.Context) {
 	err := c.ShouldBindJSON(&u)
 	user.Name = u.Name
 	if err != nil {
-		global.QJ_log.Print(err)
+		global.QjLog.Print(err)
 		//传入参数有误
 	}
 	err = service.ServiceGroup.Gorm.UserGormapi.UserLogin(user)

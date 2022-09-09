@@ -14,12 +14,12 @@ type UserGormService struct {
 //用户注册
 func (usersevices *UserGormService) UserRegister(user model.User) error {
 	var u model.User
-	if global.QJ_db.Where("name=?", user.Name).First(&u).Error == nil {
+	if global.QjDb.Where("name=?", user.Name).First(&u).Error == nil {
 		return errors.New("用户注册")
 	} else {
 		user.Uuid = uuid.Must(uuid.NewRandom())                 //生产uuui
 		user.Workaddres = "work" + fmt.Sprintf("%v", user.Uuid) //创建工作目录
-		err := global.QJ_db.Create(&user).Error
+		err := global.QjDb.Create(&user).Error
 		if err != nil {
 			return err
 		}
@@ -30,7 +30,7 @@ func (usersevices *UserGormService) UserRegister(user model.User) error {
 //用户登录
 func (usersevices *UserGormService) UserLogin(user model.User) error {
 	var u model.User
-	err := global.QJ_db.Where("name=? or Emali=? and password=?", user.Name, user.Email, u.Password).First(&u).Error //验证密码
+	err := global.QjDb.Where("name=? or Emali=? and password=?", user.Name, user.Email, u.Password).First(&u).Error //验证密码
 	if err != nil {
 		return errors.New("密码错误")
 	}
@@ -40,12 +40,12 @@ func (usersevices *UserGormService) UserLogin(user model.User) error {
 //用户更新信息
 func (usersevices *UserGormService) UserUpdate(user model.User, password string) error {
 	var u model.User
-	r := global.QJ_db.Model(&u).Where("name=? or Emali=? and password=?", user.Name, user.Email, user.Password).Update("password", password)
+	r := global.QjDb.Model(&u).Where("name=? or Emali=? and password=?", user.Name, user.Email, user.Password).Update("password", password)
 	if r.RowsAffected != 1 {
-		global.QJ_db.Begin().Rollback() //回滚
+		global.QjDb.Begin().Rollback() //回滚
 		return errors.New("更新出错")
 	} else {
-		global.QJ_db.Begin().Commit() //提交
+		global.QjDb.Begin().Commit() //提交
 		return nil
 	}
 }

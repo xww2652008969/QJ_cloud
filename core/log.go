@@ -6,7 +6,7 @@ import (
 )
 
 func initlog() {
-	global.QJ_log.New("log.log", log.Lmicroseconds|log.Ldate)
-	global.QJ_log.SetLog()
-	global.QJ_log.Print("启动日志成功")
+	global.QjLog.New("log.log", log.Lmicroseconds|log.Ldate)
+	global.QjLog.SetLog()
+	global.QjLog.Print("启动日志成功")
 }

@@ -2,8 +2,10 @@ package global
 
 import (
 	"gitgub.com/xww2652008969/QJ-cloud/model"
+	"github.com/go-redis/redis/v8"
 	"gorm.io/gorm"
 )
 
-var QJ_log model.QjLog
-var QJ_db *gorm.DB
+var QjLog model.QjLog
+var QjDb *gorm.DB
+var QjRedis *redis.Client
