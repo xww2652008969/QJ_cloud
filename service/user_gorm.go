@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"gitgub.com/xww2652008969/QJ-cloud/global"
 	"gitgub.com/xww2652008969/QJ-cloud/model"
+	"gitgub.com/xww2652008969/QJ-cloud/utils"
 	"github.com/google/uuid"
 )
 
@@ -14,11 +15,11 @@ type UserGormService struct {
 //用户注册
 func (usersevices *UserGormService) UserRegister(user model.User) error {
 	var u model.User
-	if global.QjDb.Where("name=?", user.Name).First(&u).Error == nil {
-		return errors.New("用户注册")
+	if global.QjDb.Where("name=? or email=?", user.Name, user.Email).First(&u).Error == nil {
+		return errors.New("用户已注册")
 	} else {
-		user.Uuid = uuid.Must(uuid.NewRandom())                 //生产uuui
-		user.Workaddres = "work" + fmt.Sprintf("%v", user.Uuid) //创建工作目录
+		user.Uuid = uuid.Must(uuid.NewRandom())                  //uui
+		user.Workaddres = "work/" + fmt.Sprintf("%v", user.Uuid) //创建工作目录
 		err := global.QjDb.Create(&user).Error
 		if err != nil {
 			return err
@@ -28,13 +29,14 @@ func (usersevices *UserGormService) UserRegister(user model.User) error {
 }
 
 //用户登录
-func (usersevices *UserGormService) UserLogin(user model.User) error {
+func (usersevices *UserGormService) UserLogin(user model.User) (error, string) {
 	var u model.User
-	err := global.QjDb.Where("name=? or Emali=? and password=?", user.Name, user.Email, u.Password).First(&u).Error //验证密码
+	err := global.QjDb.Where("(name=? or email=?) and password=?", user.Name, user.Email, user.Password).First(&u).Error //验证密码
 	if err != nil {
-		return errors.New("密码错误")
+		return errors.New("密码错误"), ""
 	}
-	return nil
+	token, _ := utils.Createtoken(u.Uuid)
+	return nil, token
 }
 
 //用户更新信息

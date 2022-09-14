@@ -8,7 +8,7 @@ import (
 
 func InitRedis() {
 	global.QjRedis = redis.NewClient(&redis.Options{
-		Addr:     "localhost:49155",
+		Addr:     "localhost:49153",
 		Password: "redispw",
 		DB:       0,
 	})
