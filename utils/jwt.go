@@ -34,7 +34,7 @@ func Createtoken(UUID uuid.UUID) (string, error) {
 // Parsetoken 传入token 检验是否通过
 func Parsetoken(token string) (uuid.UUID, error) {
 	t, err := jwt.ParseWithClaims(token, &Myclains{}, func(token *jwt.Token) (interface{}, error) {
-		return "xww", nil
+		return []byte("123"), nil
 	})
 	if err != nil {
 		return uuid.UUID{}, err

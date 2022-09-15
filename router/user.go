@@ -2,6 +2,7 @@ package router
 
 import (
 	"gitgub.com/xww2652008969/QJ-cloud/api"
+	"gitgub.com/xww2652008969/QJ-cloud/middleware"
 	"github.com/gin-gonic/gin"
 )
 
@@ -14,5 +15,9 @@ func (receiver *UserRouter) InitUserRouter(group *gin.RouterGroup) {
 	{
 		user.POST("register", api.UserRegister)
 		user.POST("login", api.UserLogin)
+	}
+	user.Use(middleware.JwtAuth())
+	{
+		user.POST("update", api.UserUpdate)
 	}
 }

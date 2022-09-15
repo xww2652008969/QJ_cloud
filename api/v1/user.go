@@ -8,6 +8,7 @@ import (
 	"gitgub.com/xww2652008969/QJ-cloud/model/request"
 	"gitgub.com/xww2652008969/QJ-cloud/service"
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 )
 
 type UserApi struct {
@@ -19,7 +20,6 @@ func (userapi *UserApi) UserRegister(c *gin.Context) {
 	err := c.ShouldBindJSON(&u)
 	fmt.Println(u.Password)
 	if err != nil {
-		global.QjLog.Print(err)
 		//  传入参数有错
 		Response.ResponseRrror(nil, "传参有误", c)
 		return
@@ -68,5 +68,30 @@ func (userapi *UserApi) UserLogin(c *gin.Context) {
 	}
 	var resuser Response.ResUserLogin
 	resuser.Token = token
-	Response.ResponseSuccess(resuser, "ok", c)
+	resuser.Name = u.Name
+	resuser.Name = u.Email
+	Response.ResponseSuccess(resuser, "ok", c) //返回woken 记录用户登录
+}
+func (userapi UserApi) UserUpdate(c *gin.Context) {
+	var u request.ReqUserUpdate
+	var user model.User
+	err := c.ShouldBindJSON(&u)
+	if err != nil {
+		global.QjLog.Print(err)
+		Response.ResponseRrror(nil, "传参有误", c)
+		return
+	}
+	if len(u.OldPassword) == 0 || len(u.NewPassword) == 0 {
+		Response.ResponseRrror(nil, "传参有误", c)
+		return
+	}
+	id, _ := c.Get("uuid")
+	user.Uuid = id.(uuid.UUID)
+	user.Password = u.OldPassword
+	err = service.ServiceGroup.Gorm.UserGormapi.UserUpdate(user, u.NewPassword)
+	if err != nil {
+		Response.ResponseRrror(nil, "更像错误", c)
+		return
+	}
+	Response.ResponseSuccess(nil, "更新成功", c)
 }

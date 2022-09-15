@@ -42,7 +42,7 @@ func (usersevices *UserGormService) UserLogin(user model.User) (error, string) {
 //用户更新信息
 func (usersevices *UserGormService) UserUpdate(user model.User, password string) error {
 	var u model.User
-	r := global.QjDb.Model(&u).Where("name=? or Emali=? and password=?", user.Name, user.Email, user.Password).Update("password", password)
+	r := global.QjDb.Model(&u).Where("uuid=? and password=?", user.Uuid, user.Password).Update("password", password)
 	if r.RowsAffected != 1 {
 		global.QjDb.Begin().Rollback() //回滚
 		return errors.New("更新出错")
